@@ -5,6 +5,7 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
+        <activity android:name="com.xdroid.permission.PermissionActivity"></activity>
     </application>
 
 </manifest>
