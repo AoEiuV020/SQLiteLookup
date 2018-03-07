@@ -38,7 +38,7 @@
             android:background="@drawable/ic_query"/>
     </RelativeLayout>
 
-    <io.tablefixheaders.TableFixHeaders
+    <com.xdroid.tablefixheaders.TableFixHeaders
         android:id="@+id/table"
         android:layout_below="@+id/layout_sql_query"
         android:layout_width="match_parent"
