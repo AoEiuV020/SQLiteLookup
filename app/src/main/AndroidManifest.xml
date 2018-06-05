@@ -8,9 +8,11 @@
         android:name="com.xdroid.sqlitelookup.app.AppContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
+        android:theme="@style/AppTheme"
         android:label="@string/app_name">
         <activity
             android:name="com.xdroid.sqlitelookup.app.DbActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,11 +21,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.xdroid.sqlitelookup.app.PickDbActivity"></activity>
-        <activity android:name="com.xdroid.sqlitelookup.app.DbTablesActivity"></activity>
-        <activity android:name="com.xdroid.sqlitelookup.app.TableDesignActivity"></activity>
-        <activity android:name="com.xdroid.sqlitelookup.app.TableDataActivity"></activity>
-        <activity android:name="com.xdroid.sqlitelookup.app.RecordDetailActivity"></activity>
+        <activity
+            android:name="com.xdroid.sqlitelookup.app.PickDbActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.xdroid.sqlitelookup.app.DbTablesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.xdroid.sqlitelookup.app.TableDesignActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.xdroid.sqlitelookup.app.TableDataActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.xdroid.sqlitelookup.app.RecordDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 
