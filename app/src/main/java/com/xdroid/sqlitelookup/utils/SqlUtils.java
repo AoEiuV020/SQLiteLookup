@@ -8,10 +8,26 @@ public class SqlUtils {
 
 	public static void resolveCreateSql(String createSql,List<ColumnInfo> columnInfoList){
 		createSql = preProcessSql(createSql);
-		
-		String subSql = createSql.substring(createSql.indexOf('(') + 1, createSql.lastIndexOf(')'));
+
+        // 针对有索引的情况，建表语句外面也有括号，
+        int last = 0;
+        int leftCount = 0;
+        char[] chs = createSql.toCharArray();
+        for (int i = 0; i < chs.length; i++) {
+            char ch = chs[i];
+            if (ch == '(') {
+                leftCount++;
+            } else if (ch == ')') {
+                last = i;
+                leftCount--;
+                if (leftCount == 0) {
+                    break;
+                }
+            }
+        }
+        String subSql = createSql.substring(createSql.indexOf('(') + 1, last);
 		String[] columnInfos = subSql.split(",");
-		
+
 		ColumnInfo columnInfo;
 		String columnInfoStr;
 		String upperColumnInfoStr;
@@ -20,6 +36,12 @@ public class SqlUtils {
 		for(int i = 0; i < columnInfos.length ; ++i){
 			columnInfo = new ColumnInfo();
 			columnInfoStr = columnInfos[i].trim();
+            System.out.println("columnInfoStr = " + columnInfoStr);
+            if (columnInfoStr.contains("(") || columnInfoStr.contains(")")) {
+                // 针对有些主键外键单独写成一个字段的情况，
+                // 有括号直接跳过，
+                continue;
+            }
 			firstBlankIndex = columnInfoStr.indexOf(' ');
 			secBlankIndex = columnInfoStr.indexOf(' ', firstBlankIndex+1);
 			secBlankIndex = secBlankIndex == -1 ? columnInfoStr.length() : secBlankIndex;
@@ -48,36 +70,36 @@ public class SqlUtils {
 				defaultValue = columnInfoStr.substring(defaultBeginIndex, defaultEndIndex);
 				columnInfo.setDefaultValue(defaultValue);
 			}
-			
-			
-			if(upperColumnInfoStr.contains("PRIMARY KEY")){
+
+
+            if(upperColumnInfoStr.contains("PRIMARY KEY")){
 				columnInfo.setPrimaryKey(true);
 			}
-			
-			if(upperColumnInfoStr.contains("NOT NULL")){
+
+            if(upperColumnInfoStr.contains("NOT NULL")){
 				columnInfo.setNull(false);
 			}
-			
-			if(upperColumnInfoStr.contains("UNIQUE")){
+
+            if(upperColumnInfoStr.contains("UNIQUE")){
 				columnInfo.setUnique(true);
 			}
 			columnInfoList.add(columnInfo);
 		}
 	}
-	
-	private static String preProcessSql(String sql){
+
+    private static String preProcessSql(String sql){
 		StringBuilder resultSql = new StringBuilder();
 		char[] chs = sql.trim().toCharArray();
-		
-		boolean isText = false;
+
+        boolean isText = false;
 		boolean isLastBlank = false;
 		for(char ch : chs){
-			
-			if(ch != ' '|| !isLastBlank || isText){
+
+            if(ch != ' '|| !isLastBlank || isText){
 				resultSql.append(ch);
 			}
-			
-			if(ch == '\"' || ch == '\''){
+
+            if(ch == '\"' || ch == '\''){
 				isText = !isText;
 			}else if(ch == ' '){
 				isLastBlank = true;
@@ -85,8 +107,8 @@ public class SqlUtils {
 				isLastBlank = false;
 			}
 		}
-		
-		return resultSql.toString();
+
+        return resultSql.toString();
 	}
-	
+
 }
