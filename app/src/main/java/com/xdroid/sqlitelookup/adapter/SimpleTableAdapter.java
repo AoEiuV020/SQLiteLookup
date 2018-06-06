@@ -85,8 +85,8 @@ public abstract class SimpleTableAdapter<H,C> extends BaseTableAdapter {
 	}
 
 	public abstract void bindHeaderText(TextView tvHeader,int column,H hRecord);
-	
-	public abstract void bindCellText(TextView tvCell, int row, int column,C cRecord);
+
+	public abstract void bindCellText(TextView tvCell, int row, int column, C cRecord);
 
 	@Override
 	public int getHeight(int row) {

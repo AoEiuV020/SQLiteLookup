@@ -35,6 +35,7 @@ public class SqlUtils {
 		String name,type,defaultValue;
 		for(int i = 0; i < columnInfos.length ; ++i){
 			columnInfo = new ColumnInfo();
+			// 列信息处理在这里，
 			columnInfoStr = columnInfos[i].trim();
             System.out.println("columnInfoStr = " + columnInfoStr);
             if (columnInfoStr.contains("(") || columnInfoStr.contains(")")) {

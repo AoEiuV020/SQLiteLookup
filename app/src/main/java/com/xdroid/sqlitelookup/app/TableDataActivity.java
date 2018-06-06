@@ -21,17 +21,19 @@ import com.xdroid.sqlitelookup.model.ColumnInfo;
 import com.xdroid.sqlitelookup.model.SqliteMaster;
 import com.xdroid.sqlitelookup.utils.AppUtils;
 import com.xdroid.sqlitelookup.utils.SqlUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.xdroid.tablefixheaders.TableFixHeaders;
 import com.xdroid.utils.sqlite.DaoFactory;
 import com.xdroid.utils.sqlite.DbSqlite;
 import com.xdroid.utils.sqlite.IBaseDao;
 import com.xdroid.utils.sqlite.PagingList;
 import com.xdroid.utils.sqlite.ResultSet;
 import com.xdroid.utils.sqlite.Table.Column;
-import com.xdroid.tablefixheaders.TableFixHeaders;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 public class TableDataActivity extends BaseActivity implements View.OnClickListener , SelectorDialog.OnItemSelectedListener {
@@ -295,15 +297,27 @@ public class TableDataActivity extends BaseActivity implements View.OnClickListe
 			tvHeader.setText(hRecord.getName());
 		}
 
+		private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 		@Override
 		public void bindCellText(TextView tvCell, int row, int column,
-				final ResultSet cRecord) {
+								 final ResultSet cRecord) {
 			Object cellValue = cRecord.getValue(column+1);
 			if(cellValue != null){
-				String cellStr = cellValue.toString();
+				// 列展示在这里，
+				String cellStr;
+				cellStr = cellValue.toString();
 				if(cellStr.length() > MAX_TEXT_LEN){
 					cellStr = cellStr.substring(0, MAX_TEXT_LEN - 3);
 					cellStr += "...";
+				}
+				String columnName = cRecord.getColumnName(column + 1);
+				if (columnName.contains("date")
+						|| columnName.contains("time")) {
+					try {
+						long time = (long) cellValue;
+						cellStr = sdf.format(new Date(time));
+					} catch (Exception ignored) {
+					}
 				}
 				tvCell.setText(cellStr);
 			}else{

@@ -16,14 +16,13 @@ import com.xdroid.sqlitelookup.model.SqliteMaster;
 import com.xdroid.sqlitelookup.utils.AppUtils;
 import com.xdroid.sqlitelookup.utils.SqlUtils;
 import com.xdroid.tablefixheaders.TableFixHeaders;
+import com.xdroid.utils.sqlite.DaoFactory;
+import com.xdroid.utils.sqlite.DbSqlite;
+import com.xdroid.utils.sqlite.IBaseDao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.xdroid.utils.sqlite.DaoFactory;
-import com.xdroid.utils.sqlite.DbSqlite;
-import com.xdroid.utils.sqlite.IBaseDao;
 
 public class TableDesignActivity extends BaseActivity implements View.OnClickListener{
 
@@ -122,7 +121,7 @@ public class TableDesignActivity extends BaseActivity implements View.OnClickLis
 
 		@Override
 		public void bindCellText(TextView tvCell, int row, int column,
-				ColumnInfo cRecord) {
+                                 ColumnInfo cRecord) {
 			switch(column){
 			case -1:
 				tvCell.setText(String.valueOf(row + 1));
