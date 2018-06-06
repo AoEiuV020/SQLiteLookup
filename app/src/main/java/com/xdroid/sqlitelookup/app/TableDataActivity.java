@@ -273,10 +273,14 @@ public class TableDataActivity extends BaseActivity implements View.OnClickListe
 		@Override
 		public int getWidth(int column) {
 			String type = mColumnInfoList.get(column+1).getType();
+			String name = mColumnInfoList.get(column + 1).getName();
 			Context context = getContext();
 			if(type != null){
 				if(type.equals(Column.TYPE_STRING)){
 					return AppUtils.dipToPx(context, 100);
+				} else if (type.equals(Column.TYPE_INTEGER)
+						&& (name.contains("date") || name.contains("time"))) {
+					return AppUtils.dipToPx(context, 150);
 				}else if(type.equals(Column.TYPE_BOOLEAN)){
 					return AppUtils.dipToPx(context, 50);
 				}else if(type.equals(Column.TYPE_BLOB)){
