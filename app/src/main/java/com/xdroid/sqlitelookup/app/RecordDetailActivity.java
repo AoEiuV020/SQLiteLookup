@@ -16,8 +16,11 @@ import android.widget.TextView;
 
 import com.xdroid.sqlitelookup.R;
 import com.xdroid.sqlitelookup.utils.AppUtils;
-
 import com.xdroid.utils.sqlite.ResultSet;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class RecordDetailActivity extends BaseActivity{
 
@@ -76,6 +79,7 @@ public class RecordDetailActivity extends BaseActivity{
 			return position;
 		}
 
+		private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			RecordItemViewHolder viewHodler;
@@ -94,8 +98,9 @@ public class RecordDetailActivity extends BaseActivity{
 			}else{
 				convertView.setBackgroundColor(oddColor);
 			}
-			
-			viewHodler.tvName.setText(resultSet.getColumnName(position));
+
+			String columnName = resultSet.getColumnName(position);
+			viewHodler.tvName.setText(columnName);
 			
 			viewHodler.tvValue.setCompoundDrawables(null, null, null, null);
 			
@@ -110,21 +115,21 @@ public class RecordDetailActivity extends BaseActivity{
 						viewHodler.tvValue.setText("");
 						float bmWidth = bm.getWidth();
 						float bmHeight = bm.getHeight();
-						
+
 						boolean sizeChanged = false;
-						
+
 						if(bmWidth > maxBitmapWidth){
 							bmHeight = bmHeight/bmWidth *  maxBitmapWidth;
 							bmWidth = maxBitmapWidth;
 							sizeChanged = true;
 						}
-						
+
 						if(bmHeight > maxBitmapHeight){
 							bmWidth = bmWidth / bmHeight * maxBitmapHeight;
 							bmHeight = maxBitmapHeight;
 							sizeChanged = true;;
 						}
-						
+
 						if(sizeChanged){
 							bm = Bitmap.createScaledBitmap(bm, (int)bmWidth, (int)bmHeight, true);
 						}
@@ -145,6 +150,9 @@ public class RecordDetailActivity extends BaseActivity{
 						}
 						viewHodler.tvValue.setText(hexBuilder.toString());
 					}
+				} else if (value instanceof Long
+						&& (columnName.contains("date") || columnName.contains("time"))) {
+					viewHodler.tvValue.setText(sdf.format(new Date((long) value)));
 				}else{
 					final String wholeText = value.toString();
 					final TextView tvValue = viewHodler.tvValue;
@@ -160,7 +168,7 @@ public class RecordDetailActivity extends BaseActivity{
 								}else{
 									tvValue.setText(wholeText);
 								}
-								
+
 							}
 						});
 					}else{
